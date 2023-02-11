@@ -29,14 +29,9 @@ fun SetupNavGraph(
     }
 }
 
+@ExperimentalMaterial3Api
 fun NavGraphBuilder.authenticationRoute() {
     composable(route = Screen.Authentication.route) {
-    }
-}
-
-@ExperimentalMaterial3Api
-fun NavGraphBuilder.homeRoute() {
-    composable(route = Screen.Home.route) {
         val oneTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
 
@@ -51,6 +46,9 @@ fun NavGraphBuilder.homeRoute() {
             }
         )
     }
+}
+
+fun NavGraphBuilder.homeRoute() {
 }
 
 fun NavGraphBuilder.writeRoute() {
