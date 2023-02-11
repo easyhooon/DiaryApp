@@ -104,6 +104,9 @@ dependencies {
     // One-Tap Compose
     implementation 'com.github.stevdza-san:OneTapCompose:1.0.0'
 
+    // Message Bar Compose
+    implementation 'com.github.stevdza-san:MessageBarCompose:1.0.5'
+
     // Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
 }
