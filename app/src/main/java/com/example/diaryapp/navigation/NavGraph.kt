@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
+import com.stevdzasan.onetap.rememberOneTapSignInState
 
 @ExperimentalMaterial3Api
 @Composable
@@ -35,10 +36,15 @@ fun NavGraphBuilder.authenticationRoute() {
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.homeRoute() {
     composable(route = Screen.Home.route) {
-        AuthenticationScreen(
-            loadingState = false,
-            onButtonClicked = {
+        val oneTapState = rememberOneTapSignInState()
 
+        AuthenticationScreen(
+            // google login dialog open state
+            loadingState = oneTapState.opened,
+            oneTapState = oneTapState,
+            onButtonClicked = {
+                // google login dialog open
+                oneTapState.open()
             }
         )
     }
