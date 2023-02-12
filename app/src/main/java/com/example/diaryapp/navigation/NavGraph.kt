@@ -69,6 +69,7 @@ fun NavGraphBuilder.authenticationRoute() {
             },
             onDialogDismissed = { message ->
                 messageBarState.addError(Exception(message))
+                viewModel.setLoading(false)
             }
         )
     }
