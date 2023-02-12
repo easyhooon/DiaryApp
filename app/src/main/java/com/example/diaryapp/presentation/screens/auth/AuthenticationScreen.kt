@@ -18,7 +18,9 @@ fun AuthenticationScreen(
     loadingState: Boolean,
     oneTapState: OneTapSignInState,
     messageBarState: MessageBarState,
-    onButtonClicked: () -> Unit
+    onButtonClicked: () -> Unit,
+    onTokenIdReceived: (String) -> Unit,
+    onDialogDismissed: (String) -> Unit,
 ) {
     Scaffold(
         content = {
@@ -36,12 +38,12 @@ fun AuthenticationScreen(
         state = oneTapState,
         clientId = CLIENT_ID,
         onTokenIdReceived = { tokenId ->
-            Timber.d(tokenId)
-            messageBarState.addSuccess("Successfully Authenticated!")
+            Timber.d("AuthenticationScreen", tokenId)
+            onTokenIdReceived(tokenId)
         },
         onDialogDismissed = { message ->
-            Timber.d(message)
-            messageBarState.addError(Exception(message))
+            Timber.d("AuthenticationScreen", message)
+            onDialogDismissed(message)
         }
     )
 }
