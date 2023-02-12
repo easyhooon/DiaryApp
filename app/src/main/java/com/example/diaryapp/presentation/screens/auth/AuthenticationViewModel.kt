@@ -7,10 +7,14 @@ import com.example.diaryapp.util.Constant.APP_ID
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.Credentials
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AuthenticationViewModel : ViewModel() {
+
+    var authenticated = mutableStateOf(false)
+        private set
 
     var loadingState = mutableStateOf(false)
         private set
@@ -36,6 +40,9 @@ class AuthenticationViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     // composable function 에서 trigger 되기 때문에 Dispatchers.Main
                     onSuccess(result)
+                    // consider messageBar animated time(about 300ms)
+                    delay(600)
+                    authenticated.value = true
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
