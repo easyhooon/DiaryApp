@@ -25,7 +25,7 @@ class AuthenticationViewModel : ViewModel() {
 
     fun signInWithMongoAtlas(
         tokenId: String,
-        onSuccess: (Boolean) -> Unit,
+        onSuccess: () -> Unit,
         onError: (Exception) -> Unit
     ) {
         viewModelScope.launch {
@@ -39,10 +39,14 @@ class AuthenticationViewModel : ViewModel() {
                 }
                 withContext(Dispatchers.Main) {
                     // composable function 에서 trigger 되기 때문에 Dispatchers.Main
-                    onSuccess(result)
-                    // consider messageBar animated time(about 300ms)
-                    delay(600)
-                    authenticated.value = true
+                    if (result) {
+                        onSuccess()
+                        // consider messageBar animated time(about 300ms)
+                        delay(600)
+                        authenticated.value = true
+                    } else {
+                        onError(Exception("User is not logged in."))
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
