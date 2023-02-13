@@ -1,16 +1,8 @@
 package com.example.diaryapp.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -20,13 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
-import com.example.diaryapp.util.Constant.APP_ID
+import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
-import io.realm.kotlin.mongodb.App
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -40,11 +29,16 @@ fun SetupNavGraph(
     ) {
         authenticationRoute(
             navigateToHome = {
+                // home 으로 이동 할때 이전에 쌓여진 스택을 제거
                 navController.popBackStack()
                 navController.navigate(Screen.Home.route)
             }
         )
-        homeRoute()
+        homeRoute(
+            navigateToWrite = {
+                navController.navigate(Screen.Write.route)
+            }
+        )
         writeRoute()
     }
 }
@@ -95,23 +89,30 @@ fun NavGraphBuilder.authenticationRoute(
     }
 }
 
-fun NavGraphBuilder.homeRoute() {
+@ExperimentalMaterial3Api
+fun NavGraphBuilder.homeRoute(
+    navigateToWrite: () -> Unit
+) {
     composable(route = Screen.Home.route) {
-        val scope = rememberCoroutineScope()
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = {
-                scope.launch(Dispatchers.IO) {
-                    // logOut() -> suspend function
-                    App.create(APP_ID).currentUser?.logOut()
-                }
-            }) {
-                Text(text = "Logout")
-            }
-        }
+//        val scope = rememberCoroutineScope()
+//        Column(
+//            modifier = Modifier.fillMaxSize(),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Button(onClick = {
+//                scope.launch(Dispatchers.IO) {
+//                    // logOut() -> suspend function
+//                    App.create(APP_ID).currentUser?.logOut()
+//                }
+//            }) {
+//                Text(text = "Logout")
+//            }
+//        }
+        HomeScreen(
+            onMenuClicked = {},
+            navigateToWrite = navigateToWrite
+        )
     }
 }
 
