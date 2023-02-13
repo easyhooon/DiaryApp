@@ -3,9 +3,8 @@ package com.example.diaryapp.navigation
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,13 +12,19 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
+import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
+import io.realm.kotlin.mongodb.App
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.example.diaryapp.R
 
 @ExperimentalMaterial3Api
 @Composable
@@ -41,6 +46,11 @@ fun SetupNavGraph(
         homeRoute(
             navigateToWrite = {
                 navController.navigate(Screen.Write.route)
+            },
+            navigateToAuth = {
+                // Authentication 으로 이동 할때 이전에 쌓여진 스택을 제거
+                navController.popBackStack()
+                navController.navigate(Screen.Authentication.route)
             }
         )
         writeRoute()
@@ -95,26 +105,15 @@ fun NavGraphBuilder.authenticationRoute(
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.homeRoute(
-    navigateToWrite: () -> Unit
+    navigateToWrite: () -> Unit,
+    navigateToAuth: () -> Unit,
 ) {
     composable(route = Screen.Home.route) {
-//        Column(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Button(onClick = {
-//                scope.launch(Dispatchers.IO) {
-//                    // logOut() -> suspend function
-//                    App.create(APP_ID).currentUser?.logOut()
-//                }
-//            }) {
-//                Text(text = "Logout")
-//            }
-//        }
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        // we can remember this value across multiple recompositions
+        var signOutDialogOpened by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
-        
+
         HomeScreen(
             drawerState = drawerState,
             onMenuClicked = {
@@ -123,8 +122,31 @@ fun NavGraphBuilder.homeRoute(
                     drawerState.open()
                 }
             },
-            onSignOutClicked = {},
+            onSignOutClicked = {
+                signOutDialogOpened = true
+            },
             navigateToWrite = navigateToWrite
+        )
+
+        DisplayAlertDialog(
+            title = stringResource(id = R.string.sign_out),
+            message = stringResource(id = R.string.sign_out_message),
+            dialogOpened = signOutDialogOpened,
+            onCloseDialog = {
+                signOutDialogOpened = false
+            },
+            onConfirmClicked = {
+                scope.launch(Dispatchers.IO) {
+                    // logOut() -> suspend function
+                    val user = App.create(APP_ID).currentUser
+                    if (user != null) {
+                        user.logOut()
+                        withContext(Dispatchers.Main) {
+                            navigateToAuth()
+                        }
+                    }
+                }
+            }
         )
     }
 }
