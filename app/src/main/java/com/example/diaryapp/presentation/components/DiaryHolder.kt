@@ -1,14 +1,12 @@
 package com.example.diaryapp.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,14 +14,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.diaryapp.R
 import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.ui.theme.Elevation
 import com.example.diaryapp.util.toInstant
+import io.realm.kotlin.ext.realmListOf
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
@@ -37,6 +38,7 @@ fun DiaryHolder(
     // TODO 이게 뭔지 학습
     val localDensity = LocalDensity.current
     var componentHeight by remember { mutableStateOf(0.dp) }
+    var galleryOpened by remember { mutableStateOf(false) }
 
     Row(modifier = Modifier
         .clickable(
@@ -70,6 +72,21 @@ fun DiaryHolder(
                     maxLines = 4,
                     overflow = TextOverflow.Ellipsis
                 )
+                if (diary.images.isNotEmpty()) {
+                    ShowGalleryButton(
+                        galleryOpened = galleryOpened,
+                        onClick = {
+                            galleryOpened = !galleryOpened
+                        }
+                    )
+                }
+                // animatedVisibility composable function will be visible
+                // only if gallery is opened
+                AnimatedVisibility(visible = galleryOpened) {
+                    Column(modifier = Modifier.padding(all = 14.dp)) {
+                        Gallery(images = diary.images)
+                    }
+                }
             }
         }
     }
@@ -111,6 +128,19 @@ fun DiaryHeader(
 }
 
 @Composable
+fun ShowGalleryButton(
+    galleryOpened: Boolean,
+    onClick: () -> Unit
+) {
+    TextButton(onClick = onClick) {
+        Text(
+            text = if (galleryOpened) stringResource(R.string.hide_gallery) else stringResource(R.string.show_gallery),
+            style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize)
+        )
+    }
+}
+
+@Composable
 @Preview
 fun DiaryHolderPreview() {
     DiaryHolder(
@@ -119,7 +149,9 @@ fun DiaryHolderPreview() {
             description =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             mood = Mood.Happy.name
+            images = realmListOf("", "")
         },
         // empty lambda
-        onClick = {})
+        onClick = {}
+    )
 }
