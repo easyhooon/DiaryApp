@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'io.realm.kotlin'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -80,7 +81,7 @@ dependencies {
 
 
     // Mongo DB Realm
-    implementation ('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt') {
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt') {
         version {
             strictly("1.6.0-native-mt")
         }

@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.diaryapp.R
+import com.example.diaryapp.data.repository.MongoDB
 
 @ExperimentalMaterial3Api
 @Composable
@@ -127,6 +128,10 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToWrite = navigateToWrite
         )
+        
+        LaunchedEffect(key1 = Unit) {
+            MongoDB.configureTheRealm()
+        }
 
         DisplayAlertDialog(
             title = stringResource(id = R.string.sign_out),

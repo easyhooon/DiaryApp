@@ -7,12 +7,13 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-class Diary : RealmObject {
+// Mongo DB model schema(model class)
+// not support enum class type
+open class Diary : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.create()
     var ownerId: String = ""
-    // realmDB not supported enum class directly
-    var mood: String = ""
+    var mood: String = Mood.Neutral.name
     var title: String = ""
     var description: String = ""
     var images: RealmList<String> = realmListOf()
