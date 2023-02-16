@@ -14,12 +14,18 @@ import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID
 import io.realm.kotlin.mongodb.App
 
+//TODO SplashScreen 이 보이지 않는 이슈
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
+
+    var keepSplashOpened = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        installSplashScreen().setKeepOnScreenCondition {
+            // 이 값이 false 로 바뀔 때 까지 splashScreen 유지
+            keepSplashOpened
+        }
         // status bar 의 color 를 화면의 색깔과 일치 시킴
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
@@ -27,7 +33,10 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     startDestination = getStartDestination(),
-                    navController = navController
+                    navController = navController,
+                    onDateLoaded = {
+                        keepSplashOpened = false
+                    }
                 )
             }
         }

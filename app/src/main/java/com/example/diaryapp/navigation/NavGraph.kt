@@ -21,6 +21,7 @@ import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.presentation.screens.home.HomeViewModel
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
+import com.example.diaryapp.util.RequestState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -33,7 +34,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SetupNavGraph(
     startDestination: String,
-    navController: NavHostController
+    navController: NavHostController,
+    onDateLoaded: () -> Unit
 ) {
     NavHost(
         startDestination = startDestination,
@@ -44,7 +46,8 @@ fun SetupNavGraph(
                 // home 으로 이동 할때 이전에 쌓여진 스택을 제거
                 navController.popBackStack()
                 navController.navigate(Screen.Home.route)
-            }
+            },
+            onDateLoaded = onDateLoaded
         )
         homeRoute(
             navigateToWrite = {
@@ -54,7 +57,8 @@ fun SetupNavGraph(
                 // Authentication 으로 이동 할때 이전에 쌓여진 스택을 제거
                 navController.popBackStack()
                 navController.navigate(Screen.Authentication.route)
-            }
+            },
+            onDateLoaded = onDateLoaded
         )
         writeRoute()
     }
@@ -62,7 +66,8 @@ fun SetupNavGraph(
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authenticationRoute(
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    onDateLoaded: () -> Unit
 ) {
     composable(route = Screen.Authentication.route) {
         val viewModel: AuthenticationViewModel = viewModel()
@@ -71,6 +76,11 @@ fun NavGraphBuilder.authenticationRoute(
 
         val oneTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
+
+        // trigger only once
+        LaunchedEffect(key1 = Unit) {
+            onDateLoaded()
+        }
 
         AuthenticationScreen(
             authenticated = authenticated,
@@ -111,6 +121,7 @@ fun NavGraphBuilder.authenticationRoute(
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
     navigateToAuth: () -> Unit,
+    onDateLoaded: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
         val viewModel: HomeViewModel = viewModel()
@@ -121,6 +132,14 @@ fun NavGraphBuilder.homeRoute(
         val scope = rememberCoroutineScope()
         // we can remember this value across multiple recompositions
         var signOutDialogOpened by remember { mutableStateOf(false) }
+
+        // SplashScreen  후에 빈 스크린이 나타나는 것을 막기 위함
+        // 데이터를 다 받아오면 splashScreen 이 종료되도록 설정
+        LaunchedEffect(key1 = diaries) {
+            if (diaries !is RequestState.Loading) {
+                onDateLoaded()
+            }
+        }
 
         HomeScreen(
             diaries = diaries,
