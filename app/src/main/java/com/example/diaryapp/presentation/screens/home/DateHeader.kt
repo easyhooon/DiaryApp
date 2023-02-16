@@ -1,9 +1,7 @@
 package com.example.diaryapp.presentation.screens.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +16,9 @@ import java.time.LocalDate
 @Composable
 fun DateHeader(localDate: LocalDate) {
     Row(
+        modifier = Modifier
+            .padding(vertical = 14.dp)
+            .background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -58,7 +59,7 @@ fun DateHeader(localDate: LocalDate) {
             )
             Text(
                 text = "${localDate.year}",
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
                     fontWeight = FontWeight.Light

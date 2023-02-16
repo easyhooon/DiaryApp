@@ -1,5 +1,6 @@
 package com.example.diaryapp.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDrawerState
@@ -12,10 +13,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.diaryapp.R
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
+import com.example.diaryapp.presentation.screens.home.HomeViewModel
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -24,9 +27,8 @@ import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.diaryapp.R
-import com.example.diaryapp.data.repository.MongoDB
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun SetupNavGraph(
@@ -104,18 +106,24 @@ fun NavGraphBuilder.authenticationRoute(
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
     navigateToAuth: () -> Unit,
 ) {
     composable(route = Screen.Home.route) {
+        val viewModel: HomeViewModel = viewModel()
+        // val diaries = viewModel.diaries
+        // TODO by 로 선언해야 에러가 나지 않는 이유 학습
+        val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        val scope = rememberCoroutineScope()
         // we can remember this value across multiple recompositions
         var signOutDialogOpened by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
 
         HomeScreen(
+            diaries = diaries,
             drawerState = drawerState,
             onMenuClicked = {
                 scope.launch {
@@ -128,10 +136,6 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToWrite = navigateToWrite
         )
-        
-        LaunchedEffect(key1 = Unit) {
-            MongoDB.configureTheRealm()
-        }
 
         DisplayAlertDialog(
             title = stringResource(id = R.string.sign_out),

@@ -3,6 +3,7 @@ package com.example.diaryapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -13,6 +14,7 @@ import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID
 import io.realm.kotlin.mongodb.App
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
