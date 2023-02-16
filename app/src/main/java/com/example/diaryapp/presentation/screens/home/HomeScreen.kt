@@ -1,12 +1,14 @@
 package com.example.diaryapp.presentation.screens.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 
+@ExperimentalFoundationApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
@@ -34,7 +36,9 @@ fun HomeScreen(
                     Icon(imageVector = Icons.Default.Edit, contentDescription = "New Diary Icon")
                 }
             },
-            content = {}
+            content = {
+                HomeContent(diaryNotes = mapOf(), onClick = {})
+            }
         )
     }
 }
