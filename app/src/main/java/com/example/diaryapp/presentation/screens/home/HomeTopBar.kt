@@ -9,9 +9,12 @@ import androidx.compose.runtime.Composable
 @ExperimentalMaterial3Api
 @Composable
 fun HomeTopBar(
+    // 리스트를 스크롤 할때 TopBar 가 사라지고 DateHeader 가 TopBar 자리에 위치하도록(Sticky Header) animation 지정
+    scrollBehavior: TopAppBarScrollBehavior,
     onMenuClicked: () -> Unit
 ) {
     TopAppBar(
+        scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onMenuClicked

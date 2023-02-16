@@ -1,6 +1,5 @@
 package com.example.diaryapp.presentation.screens.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -9,12 +8,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.LayoutDirection
 import com.example.diaryapp.data.repository.Diaries
 import com.example.diaryapp.util.RequestState
 
 @ExperimentalFoundationApi
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
@@ -26,14 +25,20 @@ fun HomeScreen(
 ) {
     // val padding = remember { mutableStateOf(PaddingValues()) }
     var padding by remember { mutableStateOf(PaddingValues()) }
+    // collapsing animation 구현
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     // navigation Drawer 를 포함한 화면의 경우 Scaffold 를 navigation Drawer 가 포함 하는 구조
     HomeNavigationDrawer(
         drawerState = drawerState,
         onSignOutClicked = onSignOutClicked
     ) {
         Scaffold(
+            // scaffold 와 scaffold contents 를 연결
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
                 HomeTopBar(
+                    scrollBehavior = scrollBehavior,
                     onMenuClicked = onMenuClicked
                 )
             },

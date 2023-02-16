@@ -13,12 +13,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
+// 가로 화면으로 전환 후 스크롤 시 리스트가 DateHeader 밑으로 들어가는 이슈
+// -> background 을 padding 이전에 지정
 @Composable
 fun DateHeader(localDate: LocalDate) {
     Row(
         modifier = Modifier
-            .padding(vertical = 14.dp)
-            .background(MaterialTheme.colorScheme.surface),
+//            .padding(vertical = 14.dp)
+//            .background(MaterialTheme.colorScheme.surface),
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
