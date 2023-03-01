@@ -21,7 +21,8 @@ fun HomeScreen(
     drawerState: DrawerState,
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
-    navigateToWrite: () -> Unit
+    navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit
 ) {
     // val padding = remember { mutableStateOf(PaddingValues()) }
     var padding by remember { mutableStateOf(PaddingValues()) }
@@ -58,7 +59,7 @@ fun HomeScreen(
                         HomeContent(
                             paddingValues = it,
                             diaryNotes = diaries.data,
-                            onClick = {}
+                            onClick = navigateToWriteWithArgs
                         )
                     }
                     is RequestState.Error -> {

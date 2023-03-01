@@ -21,6 +21,7 @@ import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.presentation.screens.home.HomeViewModel
 import com.example.diaryapp.presentation.screens.write.WriteScreen
+import com.example.diaryapp.presentation.screens.write.WriteViewModel
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.example.diaryapp.util.RequestState
@@ -32,6 +33,7 @@ import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
@@ -57,6 +59,9 @@ fun SetupNavGraph(
         homeRoute(
             navigateToWrite = {
                 navController.navigate(Screen.Write.route)
+            },
+            navigateToWriteArgs = {
+                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
             },
             navigateToAuth = {
                 // Authentication 으로 이동 할때 이전에 쌓여진 스택을 제거
@@ -130,6 +135,7 @@ fun NavGraphBuilder.authenticationRoute(
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
+    navigateToWriteArgs: (String) -> Unit,
     navigateToAuth: () -> Unit,
     onDateLoaded: () -> Unit
 ) {
@@ -163,7 +169,8 @@ fun NavGraphBuilder.homeRoute(
             onSignOutClicked = {
                 signOutDialogOpened = true
             },
-            navigateToWrite = navigateToWrite
+            navigateToWrite = navigateToWrite,
+            navigateToWriteWithArgs = navigateToWriteArgs
         )
 
         DisplayAlertDialog(
@@ -200,7 +207,13 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
             defaultValue = null
         })
     ) {
+        val viewModel: WriteViewModel = viewModel()
+        val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+
+        LaunchedEffect(key1 = uiState) {
+            Timber.d("SelectedDiary", "${uiState.selectedDiaryId}")
+        }
 
         WriteScreen(
             selectedDiary = Diary().apply {
