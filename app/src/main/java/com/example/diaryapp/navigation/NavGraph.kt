@@ -24,6 +24,8 @@ import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.example.diaryapp.util.RequestState
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -31,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
@@ -186,6 +189,8 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
+@ExperimentalPagerApi
+@ExperimentalFoundationApi
 fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
     composable(
         route = Screen.Write.route,
@@ -195,13 +200,16 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
             defaultValue = null
         })
     ) {
+        val pagerState = rememberPagerState()
+
         WriteScreen(
             selectedDiary = Diary().apply {
                 title = "Title"
                 description = "Some Random Text"
             },
+            pagerState = pagerState,
             onDeleteConfirmed = {},
-            onBackPressed
+            onBackPressed = onBackPressed
         )
     }
 }
