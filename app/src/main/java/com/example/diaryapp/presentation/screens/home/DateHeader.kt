@@ -19,6 +19,7 @@ import java.time.LocalDate
 fun DateHeader(localDate: LocalDate) {
     Row(
         modifier = Modifier
+//            .fillMaxWidth()
 //            .padding(vertical = 14.dp)
 //            .background(MaterialTheme.colorScheme.surface),
             .fillMaxWidth()

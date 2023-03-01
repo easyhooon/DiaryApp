@@ -14,11 +14,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.R
+import com.example.diaryapp.model.Diary
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.presentation.screens.home.HomeViewModel
+import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.example.diaryapp.util.RequestState
@@ -60,7 +62,12 @@ fun SetupNavGraph(
             },
             onDateLoaded = onDateLoaded
         )
-        writeRoute()
+        writeRoute(
+            onBackPressed = {
+                //TODO popBackStack() vs navigateUp
+                navController.popBackStack()
+            }
+        )
     }
 }
 
@@ -160,10 +167,10 @@ fun NavGraphBuilder.homeRoute(
             title = stringResource(id = R.string.sign_out),
             message = stringResource(id = R.string.sign_out_message),
             dialogOpened = signOutDialogOpened,
-            onCloseDialog = {
+            onDialogClosed = {
                 signOutDialogOpened = false
             },
-            onConfirmClicked = {
+            onYesClicked = {
                 scope.launch(Dispatchers.IO) {
                     // logOut() -> suspend function
                     val user = App.create(APP_ID).currentUser
@@ -179,7 +186,7 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-fun NavGraphBuilder.writeRoute() {
+fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = KEY_DIARY_ID) {
@@ -188,6 +195,13 @@ fun NavGraphBuilder.writeRoute() {
             defaultValue = null
         })
     ) {
-
+        WriteScreen(
+            selectedDiary = Diary().apply {
+                title = "Title"
+                description = "Some Random Text"
+            },
+            onDeleteConfirmed = {},
+            onBackPressed
+        )
     }
 }
