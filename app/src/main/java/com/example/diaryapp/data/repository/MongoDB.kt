@@ -1,6 +1,5 @@
 package com.example.diaryapp.data.repository
 
-import android.security.keystore.UserNotAuthenticatedException
 import com.example.diaryapp.model.Diary
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.RequestState
@@ -11,6 +10,7 @@ import io.realm.kotlin.log.LogLevel
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.query.Sort
+import io.realm.kotlin.types.ObjectId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -65,4 +65,19 @@ object MongoDB : MongoRepository {
             flow { emit(RequestState.Error(UserNotAuthenticatedException())) }
         }
     }
+
+    override fun getSelectedDiary(diaryId: ObjectId): RequestState<Diary> {
+        return if(user != null) {
+            try {
+                val diary = realm.query<Diary>(query = "_id == $0", diaryId).find().first()
+                RequestState.Success(data = diary)
+            } catch (e: Exception) {
+                RequestState.Error(e)
+            }
+        } else {
+            RequestState.Error(UserNotAuthenticatedException())
+        }
+    }
 }
+
+private class UserNotAuthenticatedException : Exception("User is not Logged in.")
