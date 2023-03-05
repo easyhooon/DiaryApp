@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.R
-import com.example.diaryapp.model.Diary
+import com.example.diaryapp.model.Mood
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
@@ -33,7 +33,6 @@ import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
@@ -210,17 +209,16 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+        // derivedStateOf 를 사용한 이유
+        val pageNumber by remember { derivedStateOf { pagerState.currentPage} }
 
-        LaunchedEffect(key1 = uiState) {
-            Timber.d("SelectedDiary", "${uiState.selectedDiaryId}")
-        }
+//        LaunchedEffect(key1 = uiState) {
+//            Timber.d("SelectedDiary", "${uiState.selectedDiaryId}")
+//        }
 
         WriteScreen(
             uiState = uiState,
-            selectedDiary = Diary().apply {
-                title = "Title"
-                description = "Some Random Text"
-            },
+            moodName = { Mood.values()[pageNumber].name },
             pagerState = pagerState,
             onTitleChanged = { viewModel.setTitle(title = it) },
             onDescriptionChanged = { viewModel.setDescription(description = it) },

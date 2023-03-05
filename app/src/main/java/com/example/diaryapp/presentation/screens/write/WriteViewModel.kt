@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diaryapp.data.repository.MongoDB
+import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
 import com.example.diaryapp.util.RequestState
@@ -41,13 +42,18 @@ class WriteViewModel(
                     diaryId = ObjectId.Companion.from(uiState.selectedDiaryId!!)
                 )
                 if (diary is RequestState.Success) {
-                    // U iThread 에서 수행되어야 함
+                    // U iThread 에서 수행 되어야 함
+                    setSelectedDiary(diary = diary.data)
                     setTitle(title = diary.data.title)
                     setDescription(description = diary.data.description)
                     setMood(mood = Mood.valueOf(diary.data.mood))
                 }
             }
         }
+    }
+
+    fun setSelectedDiary(diary: Diary) {
+        uiState = uiState.copy(selectedDiary = diary)
     }
 
     fun setTitle(title: String) {
@@ -65,6 +71,7 @@ class WriteViewModel(
 
 data class UiState(
     val selectedDiaryId: String? = null,
+    val selectedDiary: Diary? = null,
     val title: String = "",
     val description: String = "",
     val mood: Mood = Mood.Neutral

@@ -6,7 +6,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -18,7 +17,7 @@ import com.google.accompanist.pager.PagerState
 @Composable
 fun WriteScreen(
     uiState: UiState,
-    selectedDiary: Diary?,
+    moodName: () -> String,
     pagerState: PagerState,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
@@ -33,7 +32,8 @@ fun WriteScreen(
     Scaffold(
         topBar = {
             WriteTopBar(
-                selectedDiary = selectedDiary,
+                selectedDiary = uiState.selectedDiary,
+                moodName = moodName,
                 onDeleteConfirmed = onDeleteConfirmed,
                 onBackPressed = onBackPressed
             )
