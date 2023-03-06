@@ -14,6 +14,8 @@ import com.example.diaryapp.util.RequestState
 import io.realm.kotlin.types.ObjectId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class WriteViewModel(
     private val savedStateHandle: SavedStateHandle
@@ -66,6 +68,21 @@ class WriteViewModel(
 
     fun setMood(mood: Mood) {
         uiState = uiState.copy(mood = mood)
+    }
+
+    fun insertDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = MongoDB.addNewDiary(diary = diary)
+            if (result is RequestState.Success) {
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } else if (result is RequestState.Error) {
+                withContext(Dispatchers.Main) {
+                    onError(result.error.message.toString())
+                }
+            }
+        }
     }
 }
 
