@@ -44,7 +44,8 @@ fun WriteTopBar(
 
     val selectedDiaryDateTime = remember(selectedDiary) {
         if (selectedDiary != null) {
-            SimpleDateFormat("dd MM yyyy, hh:mm a", Locale.getDefault())
+            // MMM -> ex) 3월, MAR
+            SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault())
                 .format(Date.from(selectedDiary.date.toInstant())).uppercase()
         } else {
             "Unknown"

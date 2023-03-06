@@ -9,9 +9,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -21,6 +24,7 @@ import com.example.diaryapp.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
@@ -37,7 +41,9 @@ fun WriteContent(
     onSaveClicked: (Diary) -> Unit
 ) {
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
@@ -78,14 +84,19 @@ fun WriteContent(
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Unspecified,
                     disabledIndicatorColor = Color.Unspecified,
-                    disabledLabelColor = Color.Unspecified,
+                    unfocusedIndicatorColor = Color.Unspecified,
                     placeholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = {}
+                    onNext = {
+                        scope.launch {
+                            scrollState.animateScrollTo(Int.MAX_VALUE)
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    }
                 ),
                 maxLines = 1,
                 singleLine = true
@@ -99,14 +110,16 @@ fun WriteContent(
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Unspecified,
                     disabledIndicatorColor = Color.Unspecified,
-                    disabledLabelColor = Color.Unspecified,
+                    unfocusedIndicatorColor = Color.Unspecified,
                     placeholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = {}
+                    onNext = {
+                        focusManager.clearFocus()
+                    }
                 )
             )
         }
@@ -118,16 +131,16 @@ fun WriteContent(
                     .fillMaxWidth()
                     .height(54.dp),
                 onClick = {
-                          if (uiState.title.isNotEmpty() && uiState.description.isNotEmpty()) {
-                              onSaveClicked(
-                                  Diary().apply {
-                                      this.title = uiState.title
-                                      this.description = uiState.description
-                                  }
-                              )
-                          } else {
-                                Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
-                          }
+                    if (uiState.title.isNotEmpty() && uiState.description.isNotEmpty()) {
+                        onSaveClicked(
+                            Diary().apply {
+                                this.title = uiState.title
+                                this.description = uiState.description
+                            }
+                        )
+                    } else {
+                        Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 shape = Shapes().small
             ) {
