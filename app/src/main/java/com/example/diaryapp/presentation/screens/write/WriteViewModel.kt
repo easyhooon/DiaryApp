@@ -67,21 +67,47 @@ class WriteViewModel(
         uiState = uiState.copy(description = description)
     }
 
-    fun setMood(mood: Mood) {
+    private fun setMood(mood: Mood) {
         uiState = uiState.copy(mood = mood)
     }
 
-    fun insertDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun updateAndRegisterDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = MongoDB.registerDiary(diary = diary)
-            if (result is RequestState.Success) {
-                withContext(Dispatchers.Main) {
-                    onSuccess()
-                }
-            } else if (result is RequestState.Error) {
-                withContext(Dispatchers.Main) {
-                    onError(result.error.message.toString())
-                }
+            // selectedDiaryId 가 null 이 아님을 보장할 수 있음
+            if (uiState.selectedDiaryId != null) {
+                updateDiary(diary = diary, onSuccess = onSuccess, onError = onError)
+            } else {
+                registerDiary(diary = diary, onSuccess = onSuccess, onError = onError)
+            }
+        }
+    }
+
+    private suspend fun registerDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val result = MongoDB.registerDiary(diary = diary)
+        if (result is RequestState.Success) {
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        } else if (result is RequestState.Error) {
+            withContext(Dispatchers.Main) {
+                onError(result.error.message.toString())
+            }
+        }
+    }
+
+    private suspend fun updateDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val result = MongoDB.updateDiary(diary = diary.apply {
+            _id = ObjectId.Companion.from(uiState.selectedDiaryId!!)
+            // update 할때 기존에 등록된 diary 의 date, time 정보가 갱신 되지 않도록
+            date = uiState.selectedDiary!!.date
+        })
+        if (result is RequestState.Success) {
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        } else if (result is RequestState.Error) {
+            withContext(Dispatchers.Main) {
+                onError(result.error.message.toString())
             }
         }
     }

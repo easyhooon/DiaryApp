@@ -93,6 +93,7 @@ fun WriteContent(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         scope.launch {
+                            //TODO parameter 의 의미 파악
                             scrollState.animateScrollTo(Int.MAX_VALUE)
                             focusManager.moveFocus(FocusDirection.Down)
                         }

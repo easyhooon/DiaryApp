@@ -33,6 +33,7 @@ import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
@@ -210,7 +211,7 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
         // derivedStateOf 를 사용한 이유
-        val pageNumber by remember { derivedStateOf { pagerState.currentPage} }
+        val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
 //        LaunchedEffect(key1 = uiState) {
 //            Timber.d("SelectedDiary", "${uiState.selectedDiaryId}")
@@ -225,9 +226,11 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
             onDeleteConfirmed = {},
             onBackPressed = onBackPressed,
             onSaveClicked = {
-                viewModel.insertDiary(diary = it.apply { mood = Mood.values()[pageNumber].name },
-                onSuccess = { onBackPressed() },
-                onError = {}
+                viewModel.updateAndRegisterDiary(diary = it.apply { mood = Mood.values()[pageNumber].name },
+                    onSuccess = { onBackPressed() },
+                    onError = {
+                        Timber.d("MongoDBError", it)
+                    }
                 )
             }
         )
