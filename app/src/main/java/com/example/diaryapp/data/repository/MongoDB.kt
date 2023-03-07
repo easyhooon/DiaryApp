@@ -107,7 +107,29 @@ object MongoDB : MongoRepository {
                     queriedDiary.date = diary.date
                     RequestState.Success(data = queriedDiary)
                 } else {
-                     RequestState.Error(error = Exception("Queried Diary does not exist"))
+                    RequestState.Error(error = Exception("Queried Diary does not exist"))
+                }
+            }
+        } else {
+            RequestState.Error(UserNotAuthenticatedException())
+        }
+    }
+
+    //TODO fist().find() 로직 이해
+    override suspend fun deleteDiary(id: ObjectId): RequestState<Diary> {
+        return if (user != null) {
+            realm.write {
+                val diary = query<Diary>(query = "_id == $0 AND ownerId == $1", id, user.identity)
+                    .first().find()
+                if (diary != null) {
+                    try {
+                        delete(diary)
+                        RequestState.Success(data = diary)
+                    } catch (e: Exception) {
+                        RequestState.Error(e)
+                    }
+                } else {
+                    RequestState.Error(Exception("Diary does not exist"))
                 }
             }
         } else {
