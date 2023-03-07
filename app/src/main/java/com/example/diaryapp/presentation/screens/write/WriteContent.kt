@@ -46,8 +46,11 @@ fun WriteContent(
     val focusManager = LocalFocusManager.current
 
     Column(
+        // TODO 해당 내용 복습
         modifier = Modifier
             .fillMaxSize()
+            // 키보드와 버튼 사이의 불필요한 간격을 없앰
+            .navigationBarsPadding()
             .padding(top = paddingValues.calculateTopPadding())
             .padding(bottom = paddingValues.calculateBottomPadding())
             .padding(bottom = 24.dp)
