@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -44,6 +45,12 @@ fun WriteContent(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+
+    // diary 를 작성하면서 한 줄을 넘어갈 때 자동으로 scrollPosition 이 이동되어
+    // 키보드가 diary description 을 가리지 않도록 설정
+    LaunchedEffect(key1 = scrollState.maxValue) {
+        scrollState.scrollTo(scrollState.maxValue)
+    }
 
     Column(
         // TODO 해당 내용 복습
@@ -96,7 +103,8 @@ fun WriteContent(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         scope.launch {
-                            //TODO parameter 의 의미 파악
+                            // 작성한 글의 마지막 스크롤 위치까지 스크롤
+                            // animateToScrollTo is suspend Function
                             scrollState.animateScrollTo(Int.MAX_VALUE)
                             focusManager.moveFocus(FocusDirection.Down)
                         }
