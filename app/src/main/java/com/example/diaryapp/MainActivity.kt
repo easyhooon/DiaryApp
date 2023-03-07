@@ -12,9 +12,10 @@ import com.example.diaryapp.navigation.Screen
 import com.example.diaryapp.navigation.SetupNavGraph
 import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID
+import com.google.accompanist.pager.ExperimentalPagerApi
 import io.realm.kotlin.mongodb.App
 
-//TODO SplashScreen 이 보이지 않는 이슈
+@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
