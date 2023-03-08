@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.LayoutDirection
 import com.example.diaryapp.data.repository.Diaries
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api

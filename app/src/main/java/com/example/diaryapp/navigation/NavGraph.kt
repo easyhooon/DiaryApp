@@ -26,7 +26,7 @@ import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.presentation.screens.write.WriteViewModel
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState

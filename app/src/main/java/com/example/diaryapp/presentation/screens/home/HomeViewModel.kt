@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diaryapp.data.repository.Diaries
 import com.example.diaryapp.data.repository.MongoDB
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

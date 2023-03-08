@@ -2,7 +2,7 @@ package com.example.diaryapp.data.repository
 
 import com.example.diaryapp.model.Diary
 import com.example.diaryapp.util.Constant.APP_ID
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 import com.example.diaryapp.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query

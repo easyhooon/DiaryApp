@@ -10,7 +10,7 @@ import com.example.diaryapp.data.repository.MongoDB
 import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 import com.example.diaryapp.util.toRealmInstant
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant
