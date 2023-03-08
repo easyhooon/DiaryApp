@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.example.diaryapp.util.Constant.CLIENT_ID
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.stevdzasan.messagebar.ContentWithMessageBar
 import com.stevdzasan.messagebar.MessageBarState
 import com.stevdzasan.onetap.OneTapSignInState
@@ -26,7 +28,8 @@ fun AuthenticationScreen(
     oneTapState: OneTapSignInState,
     messageBarState: MessageBarState,
     onButtonClicked: () -> Unit,
-    onTokenIdReceived: (String) -> Unit,
+    onSuccessfulFirebaseSignIn: (String) -> Unit,
+    onFailFirebaseSignIn: (Exception) -> Unit,
     onDialogDismissed: (String) -> Unit,
     navigateToHome: () -> Unit
 ) {
@@ -51,7 +54,16 @@ fun AuthenticationScreen(
         clientId = CLIENT_ID,
         onTokenIdReceived = { tokenId ->
             Timber.d("AuthenticationScreen", tokenId)
-            onTokenIdReceived(tokenId)
+            val credentials = GoogleAuthProvider.getCredential(tokenId, null)
+            FirebaseAuth.getInstance().signInWithCredential(credentials)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onSuccessfulFirebaseSignIn(tokenId)
+                    } else {
+                        task.exception?.let { it -> onFailFirebaseSignIn(it) }
+                    }
+                }
+
         },
         onDialogDismissed = { message ->
             Timber.d("AuthenticationScreen", message)
@@ -61,7 +73,7 @@ fun AuthenticationScreen(
 
     // will be triggered authenticated value is changed
     LaunchedEffect(key1 = authenticated) {
-        if(authenticated) {
+        if (authenticated) {
             navigateToHome()
         }
     }

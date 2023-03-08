@@ -145,7 +145,8 @@ fun WriteContent(
             Spacer(modifier = Modifier.height(12.dp))
             GalleryUpLoader(
                 galleryState = galleryState,
-                onAddClicked = {},
+                // gallery 에서 image 를 선택하고 돌아왔을 때 keyboard 가 내려가도록 설정
+                onAddClicked = { focusManager.clearFocus() },
                 onImageSelect = onImageSelect,
                 onImageClicked = {}
             )

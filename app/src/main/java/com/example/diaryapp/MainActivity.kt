@@ -13,6 +13,7 @@ import com.example.diaryapp.navigation.SetupNavGraph
 import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.App
 
 @ExperimentalPagerApi
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
     var keepSplashOpened = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         installSplashScreen().setKeepOnScreenCondition {
             // 이 값이 false 로 바뀔 때 까지 splashScreen 유지
             keepSplashOpened
@@ -30,7 +32,7 @@ class MainActivity : ComponentActivity() {
         // status bar 의 color 를 화면의 색깔과 일치 시킴
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            DiaryAppTheme {
+            DiaryAppTheme(dynamicColor = false) {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     startDestination = getStartDestination(),
