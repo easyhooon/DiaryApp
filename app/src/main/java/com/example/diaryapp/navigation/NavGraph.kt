@@ -16,8 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.R
-import com.example.diaryapp.model.GalleryImage
 import com.example.diaryapp.model.Mood
+import com.example.diaryapp.model.RequestState
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
@@ -27,8 +27,6 @@ import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.presentation.screens.write.WriteViewModel
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.Constant.KEY_DIARY_ID
-import com.example.diaryapp.model.RequestState
-import com.example.diaryapp.model.rememberGalleryState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -75,7 +73,7 @@ fun SetupNavGraph(
             onDateLoaded = onDateLoaded
         )
         writeRoute(
-            onBackPressed = {
+            navigateBack = {
                 //TODO popBackStack() vs navigateUp
                 navController.popBackStack()
             }
@@ -207,7 +205,7 @@ fun NavGraphBuilder.homeRoute(
 
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
-fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
+fun NavGraphBuilder.writeRoute(navigateBack: () -> Unit) {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = KEY_DIARY_ID) {
@@ -220,7 +218,7 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
         val context = LocalContext.current
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
-        val galleryState = rememberGalleryState()
+        val galleryState = viewModel.galleryState
         // derivedStateOf 를 사용하여 recomposition 을 최소화
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
@@ -235,34 +233,31 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit) {
             galleryState = galleryState,
             onTitleChanged = { viewModel.setTitle(title = it) },
             onDescriptionChanged = { viewModel.setDescription(description = it) },
+            onDateTimeUpdate = { viewModel.updateDateTime(zonedDateTime = it) },
+            onBackPressed = navigateBack,
             onDeleteConfirmed = {
                 viewModel.deleteDiary(
                     onSuccess = {
                         Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        navigateBack()
                     },
                     onError = { message ->
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     })
             },
-            onDateTimeUpdate = { viewModel.updateDateTime(zonedDateTime = it) },
-            onBackPressed = onBackPressed,
             onSaveClicked = {
                 viewModel.updateAndRegisterDiary(
                     diary = it.apply { mood = Mood.values()[pageNumber].name },
-                    onSuccess = { onBackPressed() },
+                    onSuccess = navigateBack,
                     onError = { message ->
-                        Timber.d("MongoDB Error", message)
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 )
             },
             onImageSelect = {
-                galleryState.addImage(
-                    GalleryImage(
-                        image = it,
-                        remoteImagePath = ""
-                    )
-                )
+                val type = context.contentResolver.getType(it)?.split("/")?.last() ?: "jpg"
+                Timber.d("WriteViewModel", "URI: $it")
+                viewModel.addImage(image = it, imageType = type)
             }
         )
     }
