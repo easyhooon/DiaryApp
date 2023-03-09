@@ -33,7 +33,7 @@ import kotlin.math.max
 @Composable
 fun Gallery(
     modifier: Modifier = Modifier,
-    images: List<String>,
+    images: List<Uri>,
     imageSize: Dp = 40.dp,
     spaceBetween: Dp = 10.dp,
     imageShape: CornerBasedShape = Shapes().small
@@ -59,6 +59,7 @@ fun Gallery(
         }
 
         Row {
+            //TODO take 함수의 용도
             images.take(numberOfVisibleImages.value).forEach { image ->
                 AsyncImage(
                     // clip -> 모양을 지정
@@ -69,6 +70,7 @@ fun Gallery(
                         .data(image)
                         .crossfade(true)
                         .build(),
+                    contentScale = ContentScale.Crop,
                     contentDescription = "Gallery Image"
                 )
                 Spacer(modifier = Modifier.width(spaceBetween))
