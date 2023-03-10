@@ -17,6 +17,7 @@ import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.retryUploadingImageToFirebase
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.firebase.FirebaseApp
+import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ import javax.inject.Inject
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject

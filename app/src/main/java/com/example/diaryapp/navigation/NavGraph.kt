@@ -229,9 +229,9 @@ fun NavGraphBuilder.writeRoute(navigateBack: () -> Unit) {
 
         WriteScreen(
             uiState = uiState,
-            moodName = { Mood.values()[pageNumber].name },
             pagerState = pagerState,
             galleryState = galleryState,
+            moodName = { Mood.values()[pageNumber].name },
             onTitleChanged = { viewModel.setTitle(title = it) },
             onDescriptionChanged = { viewModel.setDescription(description = it) },
             onDateTimeUpdate = { viewModel.updateDateTime(zonedDateTime = it) },
@@ -259,7 +259,8 @@ fun NavGraphBuilder.writeRoute(navigateBack: () -> Unit) {
                 val type = context.contentResolver.getType(it)?.split("/")?.last() ?: "jpg"
                 Timber.d("WriteViewModel", "URI: $it")
                 viewModel.addImage(image = it, imageType = type)
-            }
+            },
+            onImageDeleteClicked = {}
         )
     }
 }

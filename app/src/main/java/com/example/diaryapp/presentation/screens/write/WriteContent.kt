@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.diaryapp.model.Diary
+import com.example.diaryapp.model.GalleryImage
 import com.example.diaryapp.model.GalleryState
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.presentation.components.GalleryUpLoader
@@ -45,7 +46,8 @@ fun WriteContent(
     onDescriptionChanged: (String) -> Unit,
     paddingValues: PaddingValues,
     onSaveClicked: (Diary) -> Unit,
-    onImageSelect: (Uri) -> Unit
+    onImageSelect: (Uri) -> Unit,
+    onImageClicked: (GalleryImage) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -149,7 +151,7 @@ fun WriteContent(
                 // gallery 에서 image 를 선택하고 돌아왔을 때 keyboard 가 내려가도록 설정
                 onAddClicked = { focusManager.clearFocus() },
                 onImageSelect = onImageSelect,
-                onImageClicked = {}
+                onImageClicked = onImageClicked
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
