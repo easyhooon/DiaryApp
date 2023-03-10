@@ -148,7 +148,8 @@ fun NavGraphBuilder.homeRoute(
     onDateLoaded: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
-        val viewModel: HomeViewModel = viewModel()
+        val context = LocalContext.current
+        val viewModel: HomeViewModel = hiltViewModel()
         // val diaries = viewModel.diaries
         // TODO by 로 선언해야 에러가 나지 않는 이유 학습
         val diaries by viewModel.diaries
@@ -156,6 +157,7 @@ fun NavGraphBuilder.homeRoute(
         val scope = rememberCoroutineScope()
         // we can remember this value across multiple recompositions
         var signOutDialogOpened by remember { mutableStateOf(false) }
+        var deleteAllDialogOpened by remember { mutableStateOf(false) }
 
         // SplashScreen  후에 빈 스크린이 나타나는 것을 막기 위함
         // 데이터를 다 받아오면 splashScreen 이 종료되도록 설정
@@ -174,9 +176,8 @@ fun NavGraphBuilder.homeRoute(
                     drawerState.open()
                 }
             },
-            onSignOutClicked = {
-                signOutDialogOpened = true
-            },
+            onSignOutClicked = { signOutDialogOpened = true },
+            onDeleteAllClicked = { deleteAllDialogOpened = true },
             navigateToWrite = navigateToWrite,
             navigateToWriteWithArgs = navigateToWriteArgs
         )
@@ -185,9 +186,7 @@ fun NavGraphBuilder.homeRoute(
             title = stringResource(id = R.string.sign_out),
             message = stringResource(id = R.string.sign_out_message),
             dialogOpened = signOutDialogOpened,
-            onDialogClosed = {
-                signOutDialogOpened = false
-            },
+            onDialogClosed = { signOutDialogOpened = false },
             onYesClicked = {
                 scope.launch(Dispatchers.IO) {
                     // logOut() -> suspend function
@@ -199,6 +198,35 @@ fun NavGraphBuilder.homeRoute(
                         }
                     }
                 }
+            }
+        )
+
+        DisplayAlertDialog(
+            title = stringResource(id = R.string.delete_all_diaries_dialog_title),
+            message = stringResource(id = R.string.delete_all_diaries_dialog_message),
+            dialogOpened = deleteAllDialogOpened,
+            onDialogClosed = { deleteAllDialogOpened = false },
+            onYesClicked = {
+                viewModel.deleteAllDiaries(
+                    onSuccess = {
+                        Toast.makeText(context, "All Diaries Deleted.", Toast.LENGTH_SHORT).show()
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+                    onError = {
+                        Toast.makeText(
+                            context,
+                            if (it.message == "No Internet Connection")
+                                "We need an Internet Connection for this operation."
+                            else it.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+                )
             }
         )
     }

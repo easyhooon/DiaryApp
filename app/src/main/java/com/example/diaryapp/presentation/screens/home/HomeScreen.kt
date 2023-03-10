@@ -21,6 +21,7 @@ fun HomeScreen(
     drawerState: DrawerState,
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
+    onDeleteAllClicked: () -> Unit,
     navigateToWrite: () -> Unit,
     navigateToWriteWithArgs: (String) -> Unit
 ) {
@@ -32,7 +33,8 @@ fun HomeScreen(
     // navigation Drawer 를 포함한 화면의 경우 Scaffold 를 navigation Drawer 가 포함 하는 구조
     HomeNavigationDrawer(
         drawerState = drawerState,
-        onSignOutClicked = onSignOutClicked
+        onSignOutClicked = onSignOutClicked,
+        onDeleteAllClicked = onDeleteAllClicked
     ) {
         Scaffold(
             // scaffold 와 scaffold contents 를 연결
