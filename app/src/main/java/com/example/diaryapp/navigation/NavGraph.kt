@@ -260,7 +260,7 @@ fun NavGraphBuilder.writeRoute(navigateBack: () -> Unit) {
                 Timber.d("WriteViewModel", "URI: $it")
                 viewModel.addImage(image = it, imageType = type)
             },
-            onImageDeleteClicked = {}
+            onImageDeleteClicked = { galleryState.removeImage(it) }
         )
     }
 }

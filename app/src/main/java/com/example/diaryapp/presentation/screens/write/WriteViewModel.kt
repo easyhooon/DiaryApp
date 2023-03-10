@@ -149,6 +149,7 @@ class WriteViewModel @Inject constructor(
         })
         if (result is RequestState.Success) {
             uploadImagesToFirebase()
+            deleteImagesFromFirebase()
             withContext(Dispatchers.Main) {
                 onSuccess()
             }
@@ -218,11 +219,17 @@ class WriteViewModel @Inject constructor(
         }
     }
 
-    private fun deleteImagesFromFirebase(images: List<String>) {
+    private fun deleteImagesFromFirebase(images: List<String>? = null) {
         val storage = FirebaseStorage.getInstance().reference
-        images.forEach { remotePath ->
-            // delete() 함수 제공, image 의 path 만 제대로 저장하고 있으면 지우는 것은 간단
-            storage.child(remotePath).delete()
+        if (images != null) {
+            images.forEach { remotePath ->
+                // delete() 함수 제공, image 의 path 만 제대로 저장하고 있으면 지우는 것은 간단
+                storage.child(remotePath).delete()
+            }
+        } else {
+            galleryState.imagesToBeDeleted.map { it.remoteImagePath }.forEach {
+                storage.child(it).delete()
+            }
         }
     }
 
