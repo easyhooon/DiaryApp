@@ -7,7 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.diaryapp.data.database.ImageToDeleteDao
 import com.example.diaryapp.data.database.ImageToUploadDao
+import com.example.diaryapp.data.database.entity.ImageToDelete
 import com.example.diaryapp.data.database.entity.ImageToUpload
 import com.example.diaryapp.data.repository.MongoDB
 import com.example.diaryapp.model.*
@@ -33,7 +35,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val imageToUploadDao: ImageToUploadDao
+    private val imageToUploadDao: ImageToUploadDao,
+    private val imageToDeleteDao: ImageToDeleteDao
 ) : ViewModel() {
     val galleryState = GalleryState()
 
@@ -160,6 +163,7 @@ class WriteViewModel @Inject constructor(
         }
     }
 
+    // delete() 함수가 실패했을 때에 대한 핸들링을 해줘야하기 때문에 room db 의 새로운 table 이 필요
     fun deleteDiary(onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             if (uiState.selectedDiaryId != null) {
@@ -225,10 +229,26 @@ class WriteViewModel @Inject constructor(
             images.forEach { remotePath ->
                 // delete() 함수 제공, image 의 path 만 제대로 저장하고 있으면 지우는 것은 간단
                 storage.child(remotePath).delete()
+                    //실패 핸들링
+                    .addOnFailureListener {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            imageToDeleteDao.addImageToDelete(
+                                ImageToDelete(remoteImagePath = remotePath)
+                            )
+                        }
+                    }
             }
         } else {
-            galleryState.imagesToBeDeleted.map { it.remoteImagePath }.forEach {
-                storage.child(it).delete()
+            galleryState.imagesToBeDeleted.map { it.remoteImagePath }.forEach { remotePath ->
+                storage.child(remotePath).delete()
+                    //실패 핸들링
+                    .addOnFailureListener {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            imageToDeleteDao.addImageToDelete(
+                                ImageToDelete(remoteImagePath = remotePath)
+                            )
+                        }
+                    }
             }
         }
     }
