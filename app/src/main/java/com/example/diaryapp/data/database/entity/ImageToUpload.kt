@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.diaryapp.util.Constant.IMAGE_TO_UPLOAD_TABLE
 
 @Entity(tableName = IMAGE_TO_UPLOAD_TABLE)
-data class ImagesToUpload(
+data class ImageToUpload(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val remoteImagePath: String,
