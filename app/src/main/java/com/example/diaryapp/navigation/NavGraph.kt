@@ -17,8 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.R
-import com.example.diaryapp.model.Mood
-import com.example.diaryapp.model.RequestState
+import com.example.util.model.Mood
+import com.example.util.model.RequestState
 import com.example.ui.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel

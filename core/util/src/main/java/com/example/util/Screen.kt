@@ -1,6 +1,6 @@
-package com.example.diaryapp.navigation
+package com.example.util
 
-import com.example.diaryapp.util.Constant.KEY_DIARY_ID
+import com.example.util.Constant.KEY_DIARY_ID
 
 sealed class Screen(val route: String) {
     object Authentication: Screen(route = "authentication_screen")

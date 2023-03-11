@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.diaryapp.data.database.ImageToDeleteDao
 import com.example.diaryapp.data.database.ImageToUploadDao
-import com.example.diaryapp.navigation.Screen
 import com.example.diaryapp.navigation.SetupNavGraph
 import com.example.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID

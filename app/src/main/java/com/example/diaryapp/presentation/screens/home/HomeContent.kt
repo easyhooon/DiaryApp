@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.diaryapp.model.Diary
+import com.example.util.model.Diary
 import com.example.ui.components.DiaryHolder
 import java.time.LocalDate
 

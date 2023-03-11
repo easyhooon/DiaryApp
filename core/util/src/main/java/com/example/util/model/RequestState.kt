@@ -1,4 +1,4 @@
-package com.example.diaryapp.model
+package com.example.util.model
 
 // TODO out keyword 에 대해 학습
 // TODO nothing keyword 에 대해 학습

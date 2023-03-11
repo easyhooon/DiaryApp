@@ -1,11 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'io.realm.kotlin'
 }
 
 android {
-    namespace 'com.example.ui'
+    namespace 'com.example.util'
     compileSdk ProjectConfig.compileSdk
 
     defaultConfig {
@@ -30,26 +29,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion ProjectConfig.extensionVersion
-    }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
 }
 
 dependencies {
-    implementation(project(":core:util"))
+    implementation(project(":core:ui"))
 
     implementation libs.activity.compose
     implementation libs.material3.compose
-    implementation libs.compose.tooling.preview
-    implementation libs.coil
+    implementation libs.core.ktx
+    implementation libs.firebase.storage
     implementation libs.realm.sync
     implementation libs.coroutines.core
     implementation libs.desugar.jdk

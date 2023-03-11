@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.LayoutDirection
 import com.example.diaryapp.data.repository.Diaries
-import com.example.diaryapp.model.RequestState
+import com.example.util.model.RequestState
 import java.time.ZonedDateTime
 
 @ExperimentalFoundationApi

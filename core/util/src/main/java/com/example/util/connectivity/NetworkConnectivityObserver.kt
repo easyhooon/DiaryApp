@@ -1,8 +1,9 @@
-package com.example.diaryapp.connectivity
+package com.example.util.connectivity
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import com.example.util.connectivity.ConnectivityObserver
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

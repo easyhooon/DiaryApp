@@ -1,6 +1,6 @@
-package com.example.diaryapp.model
+package com.example.util.model
 
-import com.example.diaryapp.util.toRealmInstant
+import com.example.util.toRealmInstant
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant

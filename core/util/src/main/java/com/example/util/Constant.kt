@@ -1,4 +1,4 @@
-package com.example.diaryapp.util
+package com.example.util
 
 object Constant {
 

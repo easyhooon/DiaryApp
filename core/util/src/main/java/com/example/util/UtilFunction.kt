@@ -1,4 +1,4 @@
-package com.example.diaryapp.util
+package com.example.util
 
 import android.net.Uri
 import androidx.core.net.toUri
@@ -7,7 +7,6 @@ import com.example.diaryapp.data.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storageMetadata
 import io.realm.kotlin.types.RealmInstant
-import timber.log.Timber
 import java.time.Instant
 
 fun fetchImageFromFirebase(
@@ -21,7 +20,6 @@ fun fetchImageFromFirebase(
             if (remoteImagePath.trim().isNotEmpty()) {
                 FirebaseStorage.getInstance().reference.child(remoteImagePath.trim()).downloadUrl
                     .addOnSuccessListener {
-                        Timber.d("DownloadURL", "$it")
                         onImageDownload(it)
                         if (remoteImagePaths.lastIndexOf(remoteImagePaths.last()) == index) {
                             onReadyToDisplay()
