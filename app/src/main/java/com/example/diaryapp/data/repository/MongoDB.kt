@@ -1,8 +1,8 @@
 package com.example.diaryapp.data.repository
 
 import com.example.diaryapp.model.Diary
-import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.model.RequestState
+import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -11,10 +11,12 @@ import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.query.Sort
 import io.realm.kotlin.types.ObjectId
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.time.ZoneId
+import java.time.ZonedDateTime
 
 object MongoDB : MongoRepository {
 
@@ -58,6 +60,31 @@ object MongoDB : MongoRepository {
                             }
                         )
                     }
+            } catch (e: Exception) {
+                flow { emit(RequestState.Error(e)) }
+            }
+        } else {
+            flow { emit(RequestState.Error(UserNotAuthenticatedException())) }
+        }
+    }
+
+    override fun getFilterDiaries(zonedDateTime: ZonedDateTime): Flow<Diaries> {
+        return if (user != null) {
+            try {
+                realm.query<Diary>(
+                    "ownerId == $0 AND date < $1 And date > $2",
+                    user.identity,
+                    RealmInstant.from(zonedDateTime.plusDays(1).toInstant().epochSecond, 0),
+                    RealmInstant.from(zonedDateTime.minusDays(1).toInstant().epochSecond, 0)
+                ).asFlow().map { result ->
+                    RequestState.Success(
+                        data = result.list.groupBy {
+                            it.date.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                    )
+                }
             } catch (e: Exception) {
                 flow { emit(RequestState.Error(e)) }
             }
