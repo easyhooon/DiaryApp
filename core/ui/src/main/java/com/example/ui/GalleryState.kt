@@ -1,4 +1,4 @@
-package com.example.diaryapp.model
+package com.example.ui
 
 import android.net.Uri
 import androidx.compose.runtime.Composable

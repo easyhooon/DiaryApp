@@ -2,7 +2,7 @@ package com.example.diaryapp.model
 
 import androidx.compose.ui.graphics.Color
 import com.example.diaryapp.R
-import com.example.diaryapp.ui.theme.*
+import com.example.ui.theme.*
 
 enum class Mood(
     val icon: Int,

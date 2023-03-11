@@ -13,7 +13,7 @@ import com.example.diaryapp.data.database.ImageToDeleteDao
 import com.example.diaryapp.data.database.ImageToUploadDao
 import com.example.diaryapp.navigation.Screen
 import com.example.diaryapp.navigation.SetupNavGraph
-import com.example.diaryapp.ui.theme.DiaryAppTheme
+import com.example.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constant.APP_ID
 import com.example.diaryapp.util.retryDeletingImageFromFirebase
 import com.example.diaryapp.util.retryUploadingImageToFirebase

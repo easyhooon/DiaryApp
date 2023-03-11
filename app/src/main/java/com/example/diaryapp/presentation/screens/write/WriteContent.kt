@@ -25,7 +25,7 @@ import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.GalleryImage
 import com.example.diaryapp.model.GalleryState
 import com.example.diaryapp.model.Mood
-import com.example.diaryapp.presentation.components.GalleryUpLoader
+import com.example.ui.components.GalleryUpLoader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState

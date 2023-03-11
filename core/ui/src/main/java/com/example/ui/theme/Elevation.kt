@@ -1,4 +1,4 @@
-package com.example.diaryapp.ui.theme
+package com.example.ui.theme
 
 import androidx.compose.ui.unit.dp
 

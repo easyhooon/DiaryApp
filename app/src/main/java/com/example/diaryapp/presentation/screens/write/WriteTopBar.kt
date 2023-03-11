@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.diaryapp.model.Diary
-import com.example.diaryapp.presentation.components.DisplayAlertDialog
+import com.example.ui.components.DisplayAlertDialog
 import com.example.diaryapp.util.toInstant
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog

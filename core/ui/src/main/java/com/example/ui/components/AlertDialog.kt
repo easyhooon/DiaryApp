@@ -1,10 +1,9 @@
-package com.example.diaryapp.presentation.components
+package com.example.ui.components
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.example.diaryapp.R
 
 @ExperimentalMaterial3Api
 @Composable
@@ -38,12 +37,12 @@ fun DisplayAlertDialog(
                         onDialogClosed()
                     }
                 ) {
-                    Text(text = stringResource(R.string.yes))
+                    Text(text = stringResource(com.example.ui.R.string.yes))
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = onDialogClosed) {
-                    Text(text = stringResource(R.string.no))
+                    Text(text = stringResource(com.example.ui.R.string.no))
                 }
             },
             onDismissRequest = onDialogClosed

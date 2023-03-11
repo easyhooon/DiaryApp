@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.components
+package com.example.ui.components
 
 import android.net.Uri
 import android.widget.Toast
@@ -26,12 +26,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.diaryapp.R
 import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
-import com.example.diaryapp.ui.theme.Elevation
 import com.example.diaryapp.util.fetchImageFromFirebase
 import com.example.diaryapp.util.toInstant
+import com.example.ui.R
+import com.example.ui.theme.Elevation
 import io.realm.kotlin.ext.realmListOf
 import java.text.SimpleDateFormat
 import java.time.Instant

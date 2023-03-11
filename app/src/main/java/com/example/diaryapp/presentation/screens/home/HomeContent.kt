@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.diaryapp.model.Diary
-import com.example.diaryapp.presentation.components.DiaryHolder
+import com.example.ui.components.DiaryHolder
 import java.time.LocalDate
 
 @ExperimentalFoundationApi

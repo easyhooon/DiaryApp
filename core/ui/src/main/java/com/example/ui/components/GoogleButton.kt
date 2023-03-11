@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.components
+package com.example.ui.components
 
 
 import androidx.compose.animation.animateContentSize
@@ -18,7 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.diaryapp.R
+import com.example.ui.R
 
 @Composable
 fun GoogleButton(
