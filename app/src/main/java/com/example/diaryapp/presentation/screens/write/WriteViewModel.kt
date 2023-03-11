@@ -27,10 +27,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
+
+data class UiState(
+    val selectedDiaryId: String? = null,
+    val selectedDiary: Diary? = null,
+    val title: String = "",
+    val description: String = "",
+    val mood: Mood = Mood.Neutral,
+    val updatedDateTime: RealmInstant? = null
+)
 
 @HiltViewModel
 class WriteViewModel @Inject constructor(
@@ -58,20 +66,20 @@ class WriteViewModel @Inject constructor(
 
     private fun fetchSelectedDiary() {
         if (uiState.selectedDiaryId != null) {
-            viewModelScope.launch(Dispatchers.Main) {
+            viewModelScope.launch {
                 MongoDB.getSelectedDiary(diaryId = ObjectId.Companion.from(uiState.selectedDiaryId!!))
                     .catch {
                         emit(RequestState.Error(Exception("Diary is already deleted.")))
                     }
                     .collect { diary ->
                         if (diary is RequestState.Success) {
-                            // U iThread 에서 수행 되어야 함
+                            // UiThread 에서 수행 되어야 함
+                            setMood(mood = Mood.valueOf(diary.data.mood))
                             setSelectedDiary(diary = diary.data)
                             setTitle(title = diary.data.title)
                             setDescription(description = diary.data.description)
-                            setMood(mood = Mood.valueOf(diary.data.mood))
 
-                            // 54강 복습이 필요할지도
+                            // TODO 54강 복습이 필요할지도
                             fetchImageFromFirebase(
                                 remoteImagePaths = diary.data.images,
                                 onImageDownload = { downloadedImage ->
@@ -111,7 +119,11 @@ class WriteViewModel @Inject constructor(
         uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant())
     }
 
-    fun updateAndRegisterDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun updateAndRegisterDiary(
+        diary: Diary,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             // selectedDiaryId 가 null 이 아님을 보장할 수 있음
             if (uiState.selectedDiaryId != null) {
@@ -122,7 +134,11 @@ class WriteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun registerDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    private suspend fun registerDiary(
+        diary: Diary,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         val result = MongoDB.registerDiary(diary = diary.apply {
             if (uiState.updatedDateTime != null) {
                 date = uiState.updatedDateTime!!
@@ -140,9 +156,13 @@ class WriteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateDiary(diary: Diary, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    private suspend fun updateDiary(
+        diary: Diary,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         val result = MongoDB.updateDiary(diary = diary.apply {
-            _id = ObjectId.Companion.from(uiState.selectedDiaryId!!)
+            _id = ObjectId.from(uiState.selectedDiaryId!!)
             // update 할때 기존에 등록된 diary 의 date, time 정보가 갱신 되지 않도록
             date = if (uiState.updatedDateTime != null) {
                 uiState.updatedDateTime!!
@@ -164,13 +184,18 @@ class WriteViewModel @Inject constructor(
     }
 
     // delete() 함수가 실패했을 때에 대한 핸들링을 해줘야하기 때문에 room db 의 새로운 table 이 필요
-    fun deleteDiary(onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun deleteDiary(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (uiState.selectedDiaryId != null) {
                 val result = MongoDB.deleteDiary(id = ObjectId.from(uiState.selectedDiaryId!!))
                 if (result is RequestState.Success) {
                     withContext(Dispatchers.Main) {
-                        uiState.selectedDiary?.let { deleteImagesFromFirebase(images = it.images) }
+                        uiState.selectedDiary?.let {
+                            deleteImagesFromFirebase(images = it.images)
+                        }
                         onSuccess()
                     }
                 } else if (result is RequestState.Error) {
@@ -185,8 +210,7 @@ class WriteViewModel @Inject constructor(
     fun addImage(image: Uri, imageType: String) {
         // create unique name
         val remoteImagePath = "images/${FirebaseAuth.getInstance().currentUser?.uid}/" +
-                "${image.lastPathSegment}.${System.currentTimeMillis()}.$imageType"
-        Timber.d("WriteViewModel", remoteImagePath)
+                "${image.lastPathSegment}-${System.currentTimeMillis()}.$imageType"
         galleryState.addImage(
             GalleryImage(
                 image = image,
@@ -259,12 +283,3 @@ class WriteViewModel @Inject constructor(
         return "images/${Firebase.auth.currentUser?.uid}/$imageName"
     }
 }
-
-data class UiState(
-    val selectedDiaryId: String? = null,
-    val selectedDiary: Diary? = null,
-    val title: String = "",
-    val description: String = "",
-    val mood: Mood = Mood.Neutral,
-    val updatedDateTime: RealmInstant? = null
-)

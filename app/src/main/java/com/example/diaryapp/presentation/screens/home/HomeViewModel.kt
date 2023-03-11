@@ -30,7 +30,9 @@ class HomeViewModel @Inject constructor(
     private lateinit var filteredDiariesJob: Job
 
     private var network by mutableStateOf(ConnectivityObserver.Status.Unavailable)
+
     var diaries: MutableState<Diaries> = mutableStateOf(RequestState.Idle)
+
     var dateIsSelected by mutableStateOf(false)
         private set
 
