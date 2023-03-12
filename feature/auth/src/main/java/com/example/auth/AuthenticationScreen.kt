@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.auth
+package com.example.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -17,7 +17,6 @@ import com.stevdzasan.messagebar.ContentWithMessageBar
 import com.stevdzasan.messagebar.MessageBarState
 import com.stevdzasan.onetap.OneTapSignInState
 import com.stevdzasan.onetap.OneTapSignInWithGoogle
-import timber.log.Timber
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
@@ -53,7 +52,6 @@ fun AuthenticationScreen(
         state = oneTapState,
         clientId = CLIENT_ID,
         onTokenIdReceived = { tokenId ->
-            Timber.d("AuthenticationScreen", tokenId)
             val credentials = GoogleAuthProvider.getCredential(tokenId, null)
             FirebaseAuth.getInstance().signInWithCredential(credentials)
                 .addOnCompleteListener { task ->
@@ -66,7 +64,6 @@ fun AuthenticationScreen(
 
         },
         onDialogDismissed = { message ->
-            Timber.d("AuthenticationScreen", message)
             onDialogDismissed(message)
         }
     )
