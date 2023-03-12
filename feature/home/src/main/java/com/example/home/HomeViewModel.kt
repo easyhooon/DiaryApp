@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.home
+package com.example.home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -35,7 +35,6 @@ class HomeViewModel @Inject constructor(
 
     var dateIsSelected by mutableStateOf(false)
         private set
-
 
     init {
         getDiaries()

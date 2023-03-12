@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.home
+package com.example.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.w3c.dom.Text
 
 @Composable
 fun EmptyPage(
