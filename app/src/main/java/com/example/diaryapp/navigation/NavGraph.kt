@@ -17,17 +17,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.R
-import com.example.util.model.Mood
-import com.example.util.model.RequestState
-import com.example.ui.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.presentation.screens.home.HomeViewModel
 import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.presentation.screens.write.WriteViewModel
-import com.example.diaryapp.util.Constant.APP_ID
-import com.example.diaryapp.util.Constant.KEY_DIARY_ID
+import com.example.util.Constant.APP_ID
+import com.example.ui.components.DisplayAlertDialog
+import com.example.util.Constant.KEY_DIARY_ID
+import com.example.util.Screen
+import com.example.util.model.Mood
+import com.example.util.model.RequestState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -150,9 +151,8 @@ fun NavGraphBuilder.homeRoute(
     composable(route = Screen.Home.route) {
         val context = LocalContext.current
         val viewModel: HomeViewModel = hiltViewModel()
-        // val diaries = viewModel.diaries
-        // TODO by 로 선언해야 에러가 나지 않는 이유 학습
-        val diaries by viewModel.diaries
+        val diaries = viewModel.diaries
+        // val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         // we can remember this value across multiple recompositions
@@ -162,13 +162,13 @@ fun NavGraphBuilder.homeRoute(
         // SplashScreen  후에 빈 스크린이 나타나는 것을 막기 위함
         // 데이터를 다 받아오면 splashScreen 이 종료되도록 설정
         LaunchedEffect(key1 = diaries) {
-            if (diaries !is RequestState.Loading) {
+            if (diaries.value !is RequestState.Loading) {
                 onDateLoaded()
             }
         }
 
         HomeScreen(
-            diaries = diaries,
+            diaries = diaries.value,
             drawerState = drawerState,
             onMenuClicked = {
                 scope.launch {

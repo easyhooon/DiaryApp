@@ -2,8 +2,8 @@ package com.example.diaryapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.diaryapp.data.database.ImagesDatabase
-import com.example.diaryapp.util.Constant.IMAGES_DATABASE
+import com.example.mongo.database.ImagesDatabase
+import com.example.util.Constant.IMAGES_DATABASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

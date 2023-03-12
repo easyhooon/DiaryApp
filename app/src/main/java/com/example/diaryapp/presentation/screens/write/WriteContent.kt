@@ -21,11 +21,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.ui.GalleryImage
+import com.example.ui.GalleryState
+import com.example.util.GalleryUpLoader
 import com.example.util.model.Diary
-import com.example.diaryapp.model.GalleryImage
-import com.example.diaryapp.model.GalleryState
 import com.example.util.model.Mood
-import com.example.ui.components.GalleryUpLoader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState

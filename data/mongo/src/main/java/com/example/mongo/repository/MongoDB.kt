@@ -1,9 +1,9 @@
-package com.example.diaryapp.data.repository
+package com.example.mongo.repository
 
+import com.example.util.Constant.APP_ID
 import com.example.util.model.Diary
 import com.example.util.model.RequestState
-import com.example.diaryapp.util.Constant.APP_ID
-import com.example.diaryapp.util.toInstant
+import com.example.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.log.LogLevel

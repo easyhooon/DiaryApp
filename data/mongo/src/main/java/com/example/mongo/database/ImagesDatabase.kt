@@ -1,9 +1,9 @@
-package com.example.diaryapp.data.database
+package com.example.mongo.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.diaryapp.data.database.entity.ImageToDelete
-import com.example.diaryapp.data.database.entity.ImageToUpload
+import com.example.mongo.database.entity.ImageToDelete
+import com.example.mongo.database.entity.ImageToUpload
 
 @Database(
     entities = [ImageToUpload::class, ImageToDelete::class],

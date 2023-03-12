@@ -1,4 +1,4 @@
-package com.example.diaryapp.data.repository
+package com.example.mongo.repository
 
 import com.example.util.model.Diary
 import com.example.util.model.RequestState

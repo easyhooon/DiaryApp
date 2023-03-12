@@ -1,8 +1,8 @@
-package com.example.diaryapp.data.database.entity
+package com.example.mongo.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.diaryapp.util.Constant.IMAGE_TO_UPLOAD_TABLE
+import com.example.util.Constant.IMAGE_TO_UPLOAD_TABLE
 
 @Entity(tableName = IMAGE_TO_UPLOAD_TABLE)
 data class ImageToUpload(

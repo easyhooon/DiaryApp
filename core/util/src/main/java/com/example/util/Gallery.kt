@@ -1,4 +1,4 @@
-package com.example.ui.components
+package com.example.util
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
