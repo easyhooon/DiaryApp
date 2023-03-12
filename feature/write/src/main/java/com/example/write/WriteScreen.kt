@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.write
+package com.example.write
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -26,7 +26,6 @@ import com.example.ui.GalleryState
 import com.example.util.model.Diary
 import com.example.util.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import java.time.ZonedDateTime
 
 @ExperimentalPagerApi
@@ -37,7 +36,7 @@ import java.time.ZonedDateTime
 fun WriteScreen(
     uiState: UiState,
     moodName: () -> String,
-    pagerState: PagerState,
+    pagerState: com.google.accompanist.pager.PagerState,
     galleryState: GalleryState,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,

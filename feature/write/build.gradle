@@ -2,20 +2,20 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'io.realm.kotlin'
-    id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
-    namespace 'com.example.mongo'
+    namespace 'com.example.write'
     compileSdk ProjectConfig.compileSdk
 
     defaultConfig {
         minSdk ProjectConfig.minSdk
         targetSdk ProjectConfig.targetSdk
 
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        consumerProguardFiles('consumer-rules.pro')
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -31,7 +31,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion ProjectConfig.extensionVersion
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -41,15 +46,24 @@ android {
 
 dependencies {
     implementation(project(":core:util"))
+    implementation(project(":core:ui"))
+    implementation(project(":data:mongo"))
+
+    implementation libs.activity.compose
+    implementation libs.material3.compose
+    implementation libs.navigation.compose
+    implementation libs.coil
+    implementation libs.accompanist.pager
+    implementation libs.hilt.navigation.compose
+    implementation libs.date.time.picker
+    implementation libs.date.dialog
+    implementation libs.time.dialog
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+    implementation libs.firebase.auth
+    implementation libs.firebase.storage
 
     implementation libs.core.ktx
     implementation libs.coroutines.core
     implementation libs.realm.sync
-
-    implementation libs.room.runtime
-    implementation libs.room.ktx
-    kapt libs.room.compiler
-
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
 }

@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.write
+package com.example.write
 
 import android.net.Uri
 import androidx.compose.runtime.getValue

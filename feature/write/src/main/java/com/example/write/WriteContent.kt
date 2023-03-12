@@ -1,4 +1,4 @@
-package com.example.diaryapp.presentation.screens.write
+package com.example.write
 
 import android.net.Uri
 import android.widget.Toast
@@ -28,7 +28,6 @@ import com.example.util.model.Diary
 import com.example.util.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun WriteContent(
     uiState: UiState,
-    pagerState: PagerState,
+    pagerState: com.google.accompanist.pager.PagerState,
     galleryState: GalleryState,
     title: String,
     onTitleChanged: (String) -> Unit,
