@@ -87,11 +87,12 @@ dependencies {
     implementation libs.splash.api
 
     // Mongo DB Realm
-    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt') {
-        version {
-            strictly("1.6.0-native-mt")
-        }
-    }
+//    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt') {
+//        version {
+//            strictly("1.6.0-native-mt")
+//        }
+//    }
+    implementation libs.coroutines.core
     implementation libs.realm.sync
 
     // Dagger Hilt
@@ -108,7 +109,8 @@ dependencies {
 
     // Desugar JDK API
     // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.0'
-    implementation libs.desugar.jdk
+    // implementation libs.desugar.jdk
+    coreLibraryDesugaring libs.desugar.jdk
 
     // One-Tap Compose
     implementation libs.one.tap.compose
@@ -132,5 +134,4 @@ dependencies {
     // Firebase
     implementation libs.firebase.auth
     implementation libs.firebase.storage
-
 }

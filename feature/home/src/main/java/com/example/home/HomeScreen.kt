@@ -17,7 +17,7 @@ import java.time.ZonedDateTime
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     diaries: Diaries,
     drawerState: DrawerState,
     onMenuClicked: () -> Unit,

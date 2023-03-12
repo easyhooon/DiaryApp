@@ -1,5 +1,6 @@
 package com.example.mongo.repository
 
+import android.annotation.SuppressLint
 import com.example.util.Constant.APP_ID
 import com.example.util.model.Diary
 import com.example.util.model.RequestState
@@ -45,6 +46,7 @@ object MongoDB : MongoRepository {
         }
     }
 
+    @SuppressLint("NewApi")
     override fun getAllDiaries(): Flow<Diaries> {
         return if (user != null) {
             try {
@@ -68,6 +70,7 @@ object MongoDB : MongoRepository {
         }
     }
 
+    @SuppressLint("NewApi")
     override fun getFilterDiaries(zonedDateTime: ZonedDateTime): Flow<Diaries> {
         return if (user != null) {
             try {

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ui.R
 
 @Composable
-fun HomeNavigationDrawer(
+internal fun HomeNavigationDrawer(
     drawerState: DrawerState,
     onSignOutClicked: () -> Unit,
     onDeleteAllClicked: () -> Unit,

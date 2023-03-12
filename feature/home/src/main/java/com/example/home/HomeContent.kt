@@ -15,7 +15,7 @@ import java.time.LocalDate
 
 @ExperimentalFoundationApi
 @Composable
-fun HomeContent(
+internal fun HomeContent(
     paddingValues: PaddingValues,
     diaryNotes: Map<LocalDate, List<Diary>>,
     onClick: (String) -> Unit

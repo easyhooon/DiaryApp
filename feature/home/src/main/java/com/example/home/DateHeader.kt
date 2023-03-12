@@ -1,5 +1,6 @@
 package com.example.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -15,8 +16,9 @@ import java.time.LocalDate
 
 // 가로 화면으로 전환 후 스크롤 시 리스트가 DateHeader 밑으로 들어가는 이슈
 // -> background 을 padding 이전에 지정
+@SuppressLint("NewApi")
 @Composable
-fun DateHeader(localDate: LocalDate) {
+internal fun DateHeader(localDate: LocalDate) {
     Row(
         modifier = Modifier
 //            .fillMaxWidth()
@@ -75,8 +77,9 @@ fun DateHeader(localDate: LocalDate) {
     }
 }
 
+@SuppressLint("NewApi")
 @Composable
 @Preview(showBackground = true)
-fun DateHeaderPreview() {
+internal fun DateHeaderPreview() {
     DateHeader(localDate = LocalDate.now())
 }

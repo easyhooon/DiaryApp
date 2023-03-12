@@ -11,10 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.w3c.dom.Text
 
 @Composable
-fun EmptyPage(
+internal fun EmptyPage(
     title: String = "Empty Diary",
     subtitle: String = "Write Something"
 ) {

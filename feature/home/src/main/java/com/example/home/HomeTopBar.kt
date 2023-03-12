@@ -1,5 +1,6 @@
 package com.example.home
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
@@ -15,9 +16,10 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+@SuppressLint("NewApi")
 @ExperimentalMaterial3Api
 @Composable
-fun HomeTopBar(
+internal fun HomeTopBar(
     // 리스트를 스크롤 할때 TopBar 가 사라지고 DateHeader 가 TopBar 자리에 위치하도록(Sticky Header) animation 지정
     scrollBehavior: TopAppBarScrollBehavior,
     onMenuClicked: () -> Unit,

@@ -1,5 +1,6 @@
 package com.example.write
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -31,9 +32,10 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 //TODO date picker, time picker 의 width 가 예상과 다르게 화면의 전체 사이즈를 채우는 이슈
+@SuppressLint("NewApi")
 @ExperimentalMaterial3Api
 @Composable
-fun WriteTopBar(
+internal fun WriteTopBar(
     selectedDiary: Diary?,
     moodName: () -> String,
     onDateTimeUpdated: (ZonedDateTime) -> Unit,
@@ -163,7 +165,7 @@ fun WriteTopBar(
 
 @ExperimentalMaterial3Api
 @Composable
-fun DeleteDiaryAction(
+internal fun DeleteDiaryAction(
     selectedDiary: Diary?,
     onDeleteConfirmed: () -> Unit
 ) {

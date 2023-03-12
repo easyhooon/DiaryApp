@@ -33,7 +33,7 @@ import java.time.ZonedDateTime
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WriteScreen(
+internal fun WriteScreen(
     uiState: UiState,
     moodName: () -> String,
     pagerState: com.google.accompanist.pager.PagerState,
@@ -101,7 +101,7 @@ fun WriteScreen(
 }
 
 @Composable
-fun ZoomableImage(
+internal fun ZoomableImage(
     selectedGalleryImage: GalleryImage,
     onCloseClicked: () -> Unit,
     onDeleteClicked: () -> Unit

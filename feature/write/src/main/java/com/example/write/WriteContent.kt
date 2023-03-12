@@ -31,11 +31,13 @@ import com.google.accompanist.pager.HorizontalPager
 import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
+
+//TODO WriteContent 에 internal keyword 를 선언 해야 uiState 의 에러가 사라지는 이유
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
-fun WriteContent(
+internal fun WriteContent(
     uiState: UiState,
     pagerState: com.google.accompanist.pager.PagerState,
     galleryState: GalleryState,

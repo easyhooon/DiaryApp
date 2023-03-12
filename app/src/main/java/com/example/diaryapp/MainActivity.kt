@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// app module 에 desugar library 가 추가 되어있기 때문에 다른 모듈에 desugar 를 추가하지 않아도 정상적으로 컴파일됨
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api

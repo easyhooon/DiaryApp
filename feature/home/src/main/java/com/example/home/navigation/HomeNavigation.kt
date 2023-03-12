@@ -33,8 +33,7 @@ fun NavGraphBuilder.homeRoute(
     composable(route = Screen.Home.route) {
         val context = LocalContext.current
         val viewModel: HomeViewModel = hiltViewModel()
-        val diaries = viewModel.diaries
-        // val diaries by viewModel.diaries
+        val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         // we can remember this value across multiple recompositions
@@ -44,13 +43,13 @@ fun NavGraphBuilder.homeRoute(
         // SplashScreen  후에 빈 스크린이 나타나는 것을 막기 위함
         // 데이터를 다 받아오면 splashScreen 이 종료되도록 설정
         LaunchedEffect(key1 = diaries) {
-            if (diaries.value !is RequestState.Loading) {
+            if (diaries !is RequestState.Loading) {
                 onDateLoaded()
             }
         }
 
         HomeScreen(
-            diaries = diaries.value,
+            diaries = diaries,
             drawerState = drawerState,
             onMenuClicked = {
                 scope.launch {

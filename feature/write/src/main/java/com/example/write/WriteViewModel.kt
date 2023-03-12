@@ -1,5 +1,6 @@
 package com.example.write
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +36,7 @@ import java.time.ZonedDateTime
 import javax.inject.Inject
 
 
-data class UiState(
+internal data class UiState(
     val selectedDiaryId: String? = null,
     val selectedDiary: Diary? = null,
     val title: String = "",
@@ -45,7 +46,7 @@ data class UiState(
 )
 
 @HiltViewModel
-class WriteViewModel @Inject constructor(
+internal class WriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val imageToUploadDao: ImageToUploadDao,
     private val imageToDeleteDao: ImageToDeleteDao
@@ -119,6 +120,7 @@ class WriteViewModel @Inject constructor(
         uiState = uiState.copy(mood = mood)
     }
 
+    @SuppressLint("NewApi")
     fun updateDateTime(zonedDateTime: ZonedDateTime) {
         uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant())
     }

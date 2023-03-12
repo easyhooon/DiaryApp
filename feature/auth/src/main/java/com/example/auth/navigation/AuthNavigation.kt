@@ -12,6 +12,8 @@ import com.example.util.Screen
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 
+
+// navigation route 관련 함수를 제외한 나머지 composable 함수, 뷰모델 internal 키워드를 붙혀줌
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.authenticationRoute(
     navigateToHome: () -> Unit,
@@ -26,7 +28,7 @@ fun NavGraphBuilder.authenticationRoute(
         val messageBarState = rememberMessageBarState()
 
         // trigger only once
-        LaunchedEffect(key1 = kotlin.Unit) {
+        LaunchedEffect(key1 = Unit) {
             onDateLoaded()
         }
 
