@@ -2,7 +2,7 @@
 compose = "1.4.0"
 kotlin = "1.7.10"
 core-ktx = "1.9.0"
-lifecycle-runtime = "2.5.1"
+lifecycle-runtime = "2.6.1"
 activity-compose = "1.6.1"
 material3-compose = "1.1.0-beta01"
 junit = "4.13.2"
