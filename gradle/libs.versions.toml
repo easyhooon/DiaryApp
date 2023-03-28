@@ -16,7 +16,7 @@ runtime-compose = "2.6.1"
 splash = "1.0.0"
 realm = "1.0.2"
 kotlin-coroutines-core = { strictly = "1.6.4" }
-dagger-hilt = "2.44.2"
+dagger-hilt = "2.45"
 hilt-navigation-compose = "1.0.0"
 coil = "2.2.2"
 accompanist-pager = "0.28.0"
