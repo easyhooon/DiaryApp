@@ -25,7 +25,6 @@ class GalleryState {
 }
 
 
-
 /**
  * A class that represents a single image within a Gallery.
  * @param image The image that inside a gallery

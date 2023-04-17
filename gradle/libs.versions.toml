@@ -1,6 +1,6 @@
 [versions]
 compose = "1.4.0"
-kotlin = "1.7.10"
+kotlin = "1.8.0"
 core-ktx = "1.9.0"
 agp = "7.4.2"
 lifecycle-runtime = "2.5.1"
@@ -16,7 +16,7 @@ firebase-storage = "20.1.0"
 room = "2.5.1"
 runtime-compose = "2.6.1"
 splash = "1.0.0"
-realm = "1.0.2"
+realm = "1.7.0"
 kotlin-coroutines-core = { strictly = "1.6.4" }
 dagger-hilt = "2.45"
 hilt-navigation-compose = "1.0.0"

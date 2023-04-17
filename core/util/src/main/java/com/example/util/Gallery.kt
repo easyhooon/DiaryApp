@@ -38,6 +38,7 @@ fun Gallery(
     spaceBetween: Dp = 10.dp,
     imageShape: CornerBasedShape = Shapes().small
 ) {
+    // TODO 눈으로 확인했을 때 이미지를 분명 한 칸 더 넣을 수 있을 것 같은데 (5장), 4장 밖에 넣지 못하는 이유 찾기
     BoxWithConstraints(modifier = modifier) {
         val numberOfVisibleImages = remember {
             // store the result of a simple calculation within this variable
@@ -86,6 +87,8 @@ fun Gallery(
     }
 }
 
+//TODO swipe 기능을 추가하여 해당 diary 에 올린 모든 image 를 확인할 수 있는 기능을 구현해볼 것
+// mood 를 수정할때 썼던 로직을 응용해보면 될듯!
 @ExperimentalMaterial3Api
 @Composable
 fun GalleryUpLoader(

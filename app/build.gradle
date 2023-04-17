@@ -86,12 +86,6 @@ dependencies {
     // Splash API
     implementation libs.splash.api
 
-    // Mongo DB Realm
-//    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt') {
-//        version {
-//            strictly("1.6.0-native-mt")
-//        }
-//    }
     implementation libs.coroutines.core
     implementation libs.realm.sync
 
