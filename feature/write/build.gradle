@@ -54,12 +54,15 @@ dependencies {
     implementation libs.navigation.compose
     implementation libs.coil
     implementation libs.accompanist.pager
+
     implementation libs.hilt.navigation.compose
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
     implementation libs.date.time.picker
     implementation libs.date.dialog
     implementation libs.time.dialog
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
+
     implementation libs.firebase.auth
     implementation libs.firebase.storage
 
