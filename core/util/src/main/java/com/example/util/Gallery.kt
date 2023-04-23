@@ -5,11 +5,22 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +49,8 @@ fun Gallery(
     spaceBetween: Dp = 10.dp,
     imageShape: CornerBasedShape = Shapes().small
 ) {
+    // val context = LocalContext.current
+
     // TODO 눈으로 확인했을 때 이미지를 분명 한 칸 더 넣을 수 있을 것 같은데 (5장), 4장 밖에 넣지 못하는 이유 찾기
     BoxWithConstraints(modifier = modifier) {
         val numberOfVisibleImages = remember {
@@ -53,6 +66,7 @@ fun Gallery(
                 )
             }
         }
+
         val remainingImages = remember {
             derivedStateOf {
                 images.size - numberOfVisibleImages.value
@@ -82,6 +96,9 @@ fun Gallery(
                     imagesShape = imageShape,
                     remainingImages = remainingImages.value,
                 )
+                // 여기서 토스트 출력하면 오랫동안 반복 호출되다가 사라짐
+                // Toast.makeText(context, "${numberOfVisibleImages.value}, ${remainingImages.value}", Toast.LENGTH_SHORT).show()
+                // Timber.d("GalleryImages", "numberOfVisibleImages = ${numberOfVisibleImages.value}, remainingImages = ${remainingImages.value}")
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.util
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -75,7 +76,7 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
         .clickable(
             indication = null,
             interactionSource = remember { MutableInteractionSource() }
-        ) { onClick(diary._id.toString()) })
+        ) { onClick(diary._id.toHexString()) })
     {
         Spacer(modifier = Modifier.width(14.dp))
         Surface(
@@ -133,6 +134,7 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
     }
 }
 
+@SuppressLint("NewApi")
 @Composable
 fun DiaryHeader(
     moodName: String,
@@ -185,7 +187,7 @@ fun ShowGalleryButton(
             } else {
                 stringResource(R.string.show_gallery)
             },
-            style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize)
+            style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize),
         )
     }
 }

@@ -26,12 +26,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mongodb.kbson.ObjectId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -72,7 +72,10 @@ internal class WriteViewModel @Inject constructor(
     private fun fetchSelectedDiary() {
         if (uiState.selectedDiaryId != null) {
             viewModelScope.launch {
-                MongoDB.getSelectedDiary(diaryId = ObjectId.Companion.from(uiState.selectedDiaryId!!))
+                // ObjectId.from() is deprecated
+                // Object.invoke() <- 파라미터가 없는 함수는 새로운 id 를 생성함
+                // Object.invoke(hexString: String) <- 파라미터가 존재하는 경우, hexString 으로 부터 새로운 id 를 생성
+                MongoDB.getSelectedDiary(diaryId = ObjectId.invoke(uiState.selectedDiaryId!!))
                     .catch {
                         emit(RequestState.Error(Exception("Diary is already deleted.")))
                     }
@@ -168,7 +171,7 @@ internal class WriteViewModel @Inject constructor(
         onError: (String) -> Unit
     ) {
         val result = MongoDB.updateDiary(diary = diary.apply {
-            _id = ObjectId.from(uiState.selectedDiaryId!!)
+            _id = ObjectId.invoke(uiState.selectedDiaryId!!)
             // update 할때 기존에 등록된 diary 의 date, time 정보가 갱신 되지 않도록
             date = if (uiState.updatedDateTime != null) {
                 uiState.updatedDateTime!!
@@ -196,7 +199,7 @@ internal class WriteViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (uiState.selectedDiaryId != null) {
-                val result = MongoDB.deleteDiary(id = ObjectId.from(uiState.selectedDiaryId!!))
+                val result = MongoDB.deleteDiary(id = ObjectId.invoke(uiState.selectedDiaryId!!))
                 if (result is RequestState.Success) {
                     withContext(Dispatchers.Main) {
                         uiState.selectedDiary?.let {
